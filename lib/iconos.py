@@ -26,8 +26,8 @@ def get_img_data(timestamp):
     return shape, str(int(number))
 
 def draw_shape(draw, shape):
-    fill = "white"
-    outline = "blue"
+    fill = "black"
+    #outline = "blue"
     
     if shape == "year":
         lines = [(5, 0), (25, 0), (31, 16), (25, 31), (5, 31), (0, 16)]
@@ -38,22 +38,22 @@ def draw_shape(draw, shape):
         lines = [(15, 1), (31, 31), (1, 31)]
         draw.polygon(lines, fill=fill)
     elif shape == "hour":
-        draw.ellipse((0, 0, 30, 30), fill=(255, 255, 255))
+        draw.ellipse((0, 0, 30, 30), fill=fill)
     
 def draw_text(draw, number, shape):
     font_size = 18
     font = ImageFont.truetype('/var/lib/defoma/x-ttcidfont-conf.d/dirs/TrueType/Georgia.ttf', font_size)
     text_size = font.getsize(number)
-    margin_top = (32 - text_size[1]) / 2 
+    margin_top = (32 - text_size[1]) / 2  - 2
     if shape == "day":
         margin_top += 3    
     margin_left = (32 - text_size[0]) / 2
-    draw.text((margin_left, margin_top), number, font=font, fill="black") #Draw text
+    draw.text((margin_left, margin_top), number, font=font, fill="white") #Draw text
     
     
 def get_image(timestamp):
     shape, number = get_img_data(timestamp)
-    file_name = "%s_%s.jpg" % (shape, number)
+    file_name = "%s_%s.png" % (shape, number)
     if not path.exists(file_name):
         generate_image(timestamp, file_name, shape, number)
     
@@ -64,7 +64,7 @@ def generate_image(timestamp, file_name, shape, number):
     draw = ImageDraw.Draw(img)
     draw_shape(draw, shape)
     draw_text(draw, number, shape)
-    img.save(file_name, "JPEG")
+    img.save(file_name, "PNG")
     return file_name
     
 if __name__ == "__main__":
