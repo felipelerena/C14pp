@@ -1,6 +1,10 @@
-import Image, ImageDraw, ImageFont
+import Image
+import ImageDraw
+import ImageFont
 
+from os import path
 from datetime import datetime
+
 
 def get_img_data(timestamp):
     ts_date = datetime.fromtimestamp(timestamp)
@@ -29,7 +33,7 @@ def draw_shape(draw, shape):
         lines = [(5, 0), (25, 0), (31, 16), (25, 31), (5, 31), (0, 16)]
         draw.polygon(lines, fill=fill)
     elif shape == "month":
-        draw.rectangle((1, 1, 30, 30), fill=fill, outline=outline)
+        draw.rectangle((0, 0, 31, 31), fill=fill)
     elif shape == "day":
         lines = [(15, 1), (31, 31), (1, 31)]
         draw.polygon(lines, fill=fill)
@@ -49,17 +53,21 @@ def draw_text(draw, number, shape):
     
 def get_image(timestamp):
     shape, number = get_img_data(timestamp)
-    print shape, number
+    file_name = "%s_%s.jpg" % (shape, number)
+    if not path.exists(file_name):
+        generate_image(timestamp, file_name, shape, number)
+    
+    return file_name
+        
+def generate_image(timestamp, file_name, shape, number):
     img = Image.new('RGBA', (32, 32), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     draw_shape(draw, shape)
     draw_text(draw, number, shape)
-    
-    img.save("icono.jpg", "JPEG")
-    
-    
+    img.save(file_name, "JPEG")
+    return file_name
     
 if __name__ == "__main__":
-    timestamp = 816870646
-     
-    get_image(timestamp)
+    test_dates = [816870646, 1321792246, 1298205046, 1322302440, 1321202246, 1322335343]
+    for date in test_dates:
+        print get_image(date)
