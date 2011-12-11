@@ -1,0 +1,10 @@
+{
+    "license": "MPL 1.1/GPL 2.0/LGPL 2.1",
+    "name": "c14pp",
+    "contributors": ["Cesar Miquel", "Felipe Lerena"],
+    "author": "Felipe Lerena",
+    "version": "0.4",
+    "keywords": [],
+    "id": "c14pp",
+    "description": "The Carbon 14 of the web"
+}
